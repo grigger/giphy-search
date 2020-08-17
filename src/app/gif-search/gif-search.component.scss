@@ -1,3 +1,11 @@
+h1 {
+  margin-bottom: 30px;
+}
+
+.search-input {
+  max-width: 600px;
+}
+
 .results-container {
   display: flex;
   flex-flow: row wrap;
@@ -6,9 +14,9 @@
   justify-content: flex-start;
   width: 100%;
   overflow: hidden;
-  padding: 0 20px;
   margin: 20px auto;
 }
+
 app-gif-search-result {
   flex: 0 1 auto;
   margin: 0 10px 10px 0;

@@ -1,5 +1,8 @@
-<input #searchInput (keyup)="searchGif(searchInput.value)">
+<h1>GIF Search</h1>
 
+<input #searchInput (keyup)="searchGif(searchInput.value)" class="form-control search-input" placeholder="Search here, i.e. 'doggo 🐶'">
+
+<!-- TODO: improve this -->
 <div *ngIf="isLoading">
   I am loading
 </div>
