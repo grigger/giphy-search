@@ -5,6 +5,6 @@
 </div>
 
 <!-- TODO: refactor the ifs with ng containers for is loading or something that makes more sense -->
-<div *ngIf="!isLoading && searchResults?.length">
+<div *ngIf="!isLoading && searchResults?.length" class="results-container">
   <app-gif-search-result *ngFor="let image of searchResults" [gif]="image"></app-gif-search-result>
 </div>

@@ -14,7 +14,7 @@ export class GifSearchResultComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.imageSources = this.gif.images.fixed_width || this.gif.images.original;
+    this.imageSources = this.gif.images.fixed_height || this.gif.images.original;
 
     // Show webp if it's a smaller image, based on Giphy's rendition guide
     // https://developers.giphy.com/docs/optional-settings/#rendition-guide
