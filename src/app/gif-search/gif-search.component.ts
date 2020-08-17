@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { GiphySearchService } from '../shared/giphy-search.service';
-import { GIFObject } from 'giphy-api';
+import { GIFObject, MultiResponse as GiphyResponse } from 'giphy-api';
 import Constants from '../shared/constants';
 
 @Component({
@@ -13,6 +13,7 @@ import Constants from '../shared/constants';
 export class GifSearchComponent implements OnInit {
   public isLoading = false;
   public searchResults: GIFObject[];
+  public searchResultsMeta: GiphyResponse['pagination'];
   private searchTextChanged = new Subject<string>();
 
   constructor(
@@ -31,6 +32,9 @@ export class GifSearchComponent implements OnInit {
       .subscribe(
         result => {
           this.searchResults = result.data;
+          this.searchResultsMeta = result.pagination;
+          // ^ mai bine fa this.pagination ... ca sa calculezi 140 out of 160 iti trebuie si offset ... count + offset
+
           // pagination
           console.log('result', result);
         },

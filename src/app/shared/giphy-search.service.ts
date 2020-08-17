@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {GIFObject, MultiResponse} from 'giphy-api';
+import { MultiResponse as GiphyResponse } from 'giphy-api';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment' ;
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +14,9 @@ export class GiphySearchService {
     private http: HttpClient
   ) { }
 
-  search(term: string): Observable<MultiResponse> {
+  search(term: string): Observable<GiphyResponse> {
     return this.http
-      .get<MultiResponse>(this.giphyApiUrl, {
+      .get<GiphyResponse>(this.giphyApiUrl, {
         params: {
           api_key: environment.giphyApiKey,
           q: term,
