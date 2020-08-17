@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" (click)="goToGifPage()">
   <picture class="card-img-top">
     <source *ngIf="displayType === 'webp'" srcset="{{ imageSources.webp }}" type="image/webp">
     <!-- Use the gif image as a fallback even if it's the smallest of the current gif formats, in case webp is not supported -->
