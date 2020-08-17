@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { GiphySearchService } from '../shared/giphy-search.service';
 import { GIFObject, MultiResponse as GiphyResponse } from 'giphy-api';
-import Constants from '../shared/constants';
+import constants from '../shared/constants';
 
 @Component({
   selector: 'app-gif-search',
@@ -25,8 +25,8 @@ export class GifSearchComponent implements OnInit {
       .pipe(
         distinctUntilChanged(),
         tap(() => this.isLoading = true),
-        debounceTime(Constants.apiDebounceTime),
-        switchMap(searchTerm => this.giphySearchSvc.search(searchTerm)),
+        debounceTime(constants.apiDebounceTime),
+        switchMap(searchTerm => this.giphySearchSvc.search(searchTerm, 1)),
         tap(() => this.isLoading = false)
       )
       .subscribe(

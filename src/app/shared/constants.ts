@@ -1,3 +1,4 @@
 export default {
-  apiDebounceTime: 500
+  apiDebounceTime: 500,
+  searchResultsPerPage: 20
 };

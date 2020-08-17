@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MultiResponse as GiphyResponse } from 'giphy-api';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment' ;
+import constants from '../shared/constants'
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,14 @@ export class GiphySearchService {
     private http: HttpClient
   ) { }
 
-  search(term: string): Observable<GiphyResponse> {
+  search(term: string, page: number): Observable<GiphyResponse> {
     return this.http
       .get<GiphyResponse>(this.giphyApiUrl, {
         params: {
           api_key: environment.giphyApiKey,
           q: term,
-          limit: '20',
-          offset: '0',
+          limit: constants.searchResultsPerPage.toString(),
+          offset: ((page - 1) * constants.searchResultsPerPage).toString(),
           rating: 'g'
         }
       });
