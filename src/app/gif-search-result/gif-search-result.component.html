@@ -1,0 +1,6 @@
+<picture>
+  <source *ngIf="displayType === 'webp'" srcset="{{ imageSources.webp }}" type="image/webp">
+  <!-- Use the gif image as a fallback even if it's the smallest of the current gif formats, in case webp is not supported -->
+  <source srcset="{{ imageSources.url }}" type="image/gif">
+  <img src="{{ imageSources.url }}" alt="{{ gif.title }}">
+</picture>

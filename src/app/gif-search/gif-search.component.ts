@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { GiphySearchService } from '../shared/giphy-search.service';
+import { GIFObject } from 'giphy-api';
+import Constants from '../shared/constants';
 
 @Component({
   selector: 'app-gif-search',
@@ -10,22 +12,26 @@ import { GiphySearchService } from '../shared/giphy-search.service';
 })
 export class GifSearchComponent implements OnInit {
   public isLoading = false;
+  public searchResults: GIFObject[];
   private searchTextChanged = new Subject<string>();
 
   constructor(
-    // private formBuilder: FormBuilder,
     private giphySearchSvc: GiphySearchService
   ) { }
 
   ngOnInit(): void {
     this.searchTextChanged
       .pipe(
-        debounceTime(500),
         distinctUntilChanged(),
-        switchMap(searchTerm => this.giphySearchSvc.search(searchTerm))
+        tap(() => this.isLoading = true),
+        debounceTime(Constants.apiDebounceTime),
+        switchMap(searchTerm => this.giphySearchSvc.search(searchTerm)),
+        tap(() => this.isLoading = false)
       )
       .subscribe(
         result => {
+          this.searchResults = result.data;
+          // pagination
           console.log('result', result);
         },
         err => {

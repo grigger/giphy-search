@@ -1,2 +1,10 @@
-<p>gif-search works!</p>
 <input #searchInput (keyup)="searchGif(searchInput.value)">
+
+<div *ngIf="isLoading">
+  I am loading
+</div>
+
+<!-- TODO: refactor the ifs with ng containers for is loading or something that makes more sense -->
+<div *ngIf="!isLoading && searchResults?.length">
+  <app-gif-search-result *ngFor="let image of searchResults" [gif]="image"></app-gif-search-result>
+</div>
