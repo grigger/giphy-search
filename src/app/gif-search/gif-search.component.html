@@ -13,7 +13,12 @@
   </div>
 </div>
 
-<ng-container *ngIf="currentSearchTerm">
+<div *ngIf="error" class="alert alert-danger" role="alert">
+  There was an error with your search:
+  <pre>{{ error }}</pre>
+</div>
+
+<ng-container *ngIf="currentSearchTerm && !error">
   <span *ngIf="isLoading" class="spinner spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
 
   <ng-container *ngIf="!isLoading">

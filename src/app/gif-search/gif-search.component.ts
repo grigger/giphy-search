@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
+import { Observable, of, Subject, throwError } from 'rxjs';
+import {debounceTime, distinctUntilChanged, switchMap, tap, filter, catchError} from 'rxjs/operators';
 import { GIFObject, MultiResponse as GiphyResponse } from 'giphy-api';
 import { GiphySearchService } from '../shared/giphy-search.service';
 import { BadWordsFilterService } from '../shared/bad-words-filter.service';
@@ -17,6 +17,7 @@ export class GifSearchComponent implements OnInit {
   public searchResultsMeta: GiphyResponse['pagination'] & { page: number };
   public searchResultsPerPage = constants.searchResultsPerPage;
   public currentSearchTerm: string;
+  public error: string;
   private searchTermChanged = new Subject<string>();
   private pageChanged = new Subject<number>();
 
@@ -31,7 +32,10 @@ export class GifSearchComponent implements OnInit {
     this.searchTermChanged
       .pipe(
         distinctUntilChanged(),
-        tap(searchTerm => this.currentSearchTerm = searchTerm),
+        tap(searchTerm => {
+          this.currentSearchTerm = searchTerm;
+          this.error = undefined;
+        }),
         filter(searchTerm => !!searchTerm),
         // this tap is again before the debounce so it gives the user the impression of faster speed
         tap(() => this.isLoading = true),
@@ -54,7 +58,8 @@ export class GifSearchComponent implements OnInit {
       .pipe(
         tap(() => this.isLoading = true),
         switchMap(searchParams => this.giphySearchSvc.search(searchParams.searchTerm, searchParams.searchPage)),
-        tap(() => this.isLoading = false)
+        tap(() => this.isLoading = false),
+        catchError(err => this.showError(err) && of({ data: [], pagination: {} } as GiphyResponse))
       );
   }
 
@@ -72,10 +77,9 @@ export class GifSearchComponent implements OnInit {
     }
   }
 
-  // TODO: show error in the template
-  showError(e): void {
-    console.log('reflect error in the template');
-    throw e;
+  showError(e): true {
+    this.error = e.message || e;
+    return true;
   }
 
   searchInputChanged(description: string): void {
