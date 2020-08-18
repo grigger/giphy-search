@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of, Subject, throwError } from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap, tap, filter, catchError} from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, tap, filter, catchError } from 'rxjs/operators';
 import { GIFObject, MultiResponse as GiphyResponse } from 'giphy-api';
 import { GiphySearchService } from '../shared/giphy-search.service';
 import { BadWordsFilterService } from '../shared/bad-words-filter.service';
@@ -11,7 +11,7 @@ import constants from '../shared/constants';
   templateUrl: './gif-search.component.html',
   styleUrls: ['./gif-search.component.scss']
 })
-export class GifSearchComponent implements OnInit {
+export class GifSearchComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public searchResults: GIFObject[];
   public searchResultsMeta: GiphyResponse['pagination'] & { page: number };
@@ -20,6 +20,7 @@ export class GifSearchComponent implements OnInit {
   public error: string;
   private searchTermChanged = new Subject<string>();
   private pageChanged = new Subject<number>();
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private giphySearchSvc: GiphySearchService,
@@ -27,9 +28,7 @@ export class GifSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // TODO: unsubscribe
-    // this.subscriptions.push()
-    this.searchTermChanged
+    const $searchTermChangedSubscription = this.searchTermChanged
       .pipe(
         distinctUntilChanged(),
         tap(searchTerm => {
@@ -45,12 +44,19 @@ export class GifSearchComponent implements OnInit {
       )
       .subscribe(results => this.renderSearchResults(results), e => this.showError(e));
 
-    this.pageChanged
+    const $pageChangedSubscription = this.pageChanged
       .pipe(
         distinctUntilChanged(),
         switchMap(page => this.searchGifs(this.currentSearchTerm, page))
       )
       .subscribe(results => this.renderSearchResults(results), e => this.showError(e));
+
+    this.subscriptions.push($searchTermChangedSubscription, $pageChangedSubscription);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions?.forEach(s$ => s$.unsubscribe());
+    this.subscriptions = [];
   }
 
   searchGifs(searchTerm: string, searchPage: number): Observable<GiphyResponse> {
