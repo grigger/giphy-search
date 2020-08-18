@@ -33,6 +33,8 @@ export class GifSearchComponent implements OnInit {
         distinctUntilChanged(),
         tap(searchTerm => this.currentSearchTerm = searchTerm),
         filter(searchTerm => !!searchTerm),
+        // this tap is again before the debounce so it gives the user the impression of faster speed
+        tap(() => this.isLoading = true),
         debounceTime(constants.apiDebounceTime),
         filter(searchTerm => !this.badWordsFilterSvc.isProfane(searchTerm)),
         switchMap(searchTerm => this.searchGifs(searchTerm, 1))

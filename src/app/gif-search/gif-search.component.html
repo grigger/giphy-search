@@ -1,35 +1,42 @@
 <h1>GIF Search</h1>
 
-<input #searchInput (keyup)="searchInputChanged(searchInput.value)"
-       [ngModel]="currentSearchTerm | badWordsFilter"
-       class="form-control search-input"
-       placeholder="Search here, i.e. 'doggo 🐶'">
+<div class="input-group">
+  <input #searchInput (keyup)="searchInputChanged(searchInput.value)"
+         [ngModel]="currentSearchTerm | badWordsFilter"
+         class="form-control search-input"
+         placeholder="Search here, i.e. 'doggo 🐶'">
 
-<!-- TODO: improve this -->
-<div *ngIf="isLoading">
-  I am loading
+  <div class="input-group-append" *ngIf="isLoading">
+    <span class="input-group-text">
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    </span>
+  </div>
 </div>
 
-<ng-container *ngIf="!isLoading && currentSearchTerm">
-  <div class="results-meta">
-    <ng-container *ngIf="searchResults?.length">
-      Showing results <b>{{ searchResultsMeta.offset }} - {{ searchResultsMeta.offset + searchResultsMeta.count }}</b> out of
-      <b>{{ searchResultsMeta.total_count }}</b> items
-    </ng-container>
-    <ng-container *ngIf="!searchResults?.length">
-      No results found.
-    </ng-container>
-  </div>
+<ng-container *ngIf="currentSearchTerm">
+  <span *ngIf="isLoading" class="spinner spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
 
-  <div class="results-container" *ngIf="searchResults?.length">
-    <app-gif-search-result *ngFor="let image of searchResults" [gif]="image"></app-gif-search-result>
-  </div>
+  <ng-container *ngIf="!isLoading">
+    <div class="results-meta">
+      <ng-container *ngIf="searchResults?.length">
+        Showing results <b>{{ searchResultsMeta.offset }} - {{ searchResultsMeta.offset + searchResultsMeta.count }}</b> out of
+        <b>{{ searchResultsMeta.total_count }}</b> items
+      </ng-container>
+      <ng-container *ngIf="!searchResults?.length">
+        No results found.
+      </ng-container>
+    </div>
 
-  <ngb-pagination *ngIf="searchResults?.length"
-    [page]="searchResultsMeta.offset / searchResultsPerPage + 1"
-    [pageSize]="searchResultsPerPage"
-    [collectionSize]="searchResultsMeta.total_count"
-    [maxSize]="5"
-    (pageChange)="changePage($event)">
-  </ngb-pagination>
+    <div class="results-container" *ngIf="searchResults?.length">
+      <app-gif-search-result *ngFor="let image of searchResults" [gif]="image"></app-gif-search-result>
+    </div>
+
+    <ngb-pagination *ngIf="searchResults?.length"
+      [page]="searchResultsMeta.offset / searchResultsPerPage + 1"
+      [pageSize]="searchResultsPerPage"
+      [collectionSize]="searchResultsMeta.total_count"
+      [maxSize]="5"
+      (pageChange)="changePage($event)">
+    </ngb-pagination>
+  </ng-container>
 </ng-container>
