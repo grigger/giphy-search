@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
-import { GiphySearchService } from '../shared/giphy-search.service';
+import { debounceTime, distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
 import { GIFObject, MultiResponse as GiphyResponse } from 'giphy-api';
+import { GiphySearchService } from '../shared/giphy-search.service';
+import { BadWordsFilterService } from '../shared/bad-words-filter.service';
 import constants from '../shared/constants';
 
 @Component({
@@ -20,7 +21,8 @@ export class GifSearchComponent implements OnInit {
   private pageChanged = new Subject<number>();
 
   constructor(
-    private giphySearchSvc: GiphySearchService
+    private giphySearchSvc: GiphySearchService,
+    private badWordsFilterSvc: BadWordsFilterService
   ) { }
 
   ngOnInit(): void {
@@ -29,27 +31,25 @@ export class GifSearchComponent implements OnInit {
     this.searchTermChanged
       .pipe(
         distinctUntilChanged(),
-        // filtru swear words
         tap(searchTerm => this.currentSearchTerm = searchTerm),
+        filter(searchTerm => !!searchTerm),
         debounceTime(constants.apiDebounceTime),
+        filter(searchTerm => !this.badWordsFilterSvc.isProfane(searchTerm)),
         switchMap(searchTerm => this.searchGifs(searchTerm, 1))
       )
-      .subscribe(results => this.renderSearchResults(results), () => this.showError());
+      .subscribe(results => this.renderSearchResults(results), e => this.showError(e));
 
     this.pageChanged
       .pipe(
         distinctUntilChanged(),
         switchMap(page => this.searchGifs(this.currentSearchTerm, page))
       )
-      .subscribe(results => this.renderSearchResults(results), () => this.showError());
+      .subscribe(results => this.renderSearchResults(results), e => this.showError(e));
   }
 
   searchGifs(searchTerm: string, searchPage: number): Observable<GiphyResponse> {
     return of({ searchTerm, searchPage })
       .pipe(
-        filter(searchParams => !!searchParams.searchTerm),
-        // do a min char filter here or something like this;
-        // better than to base it on isLoading going from undefined to false in the template
         tap(() => this.isLoading = true),
         switchMap(searchParams => this.giphySearchSvc.search(searchParams.searchTerm, searchParams.searchPage)),
         tap(() => this.isLoading = false)
@@ -71,8 +71,9 @@ export class GifSearchComponent implements OnInit {
   }
 
   // TODO: show error in the template
-  showError(): void {
+  showError(e): void {
     console.log('reflect error in the template');
+    throw e;
   }
 
   searchInputChanged(description: string): void {

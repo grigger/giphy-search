@@ -1,6 +1,9 @@
 <h1>GIF Search</h1>
 
-<input #searchInput (keyup)="searchInputChanged(searchInput.value)" class="form-control search-input" placeholder="Search here, i.e. 'doggo 🐶'">
+<input #searchInput (keyup)="searchInputChanged(searchInput.value)"
+       [ngModel]="currentSearchTerm | badWordsFilter"
+       class="form-control search-input"
+       placeholder="Search here, i.e. 'doggo 🐶'">
 
 <!-- TODO: improve this -->
 <div *ngIf="isLoading">
@@ -13,7 +16,7 @@
       Showing results <b>{{ searchResultsMeta.offset }} - {{ searchResultsMeta.offset + searchResultsMeta.count }}</b> out of
       <b>{{ searchResultsMeta.total_count }}</b> items
     </ng-container>
-    <ng-container *ngIf="!searchResults?.length && isLoading !== undefined">
+    <ng-container *ngIf="!searchResults?.length">
       No results found.
     </ng-container>
   </div>
