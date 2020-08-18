@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { GifSearchComponent } from './gif-search.component';
+import { GifSearchResultComponent } from '../gif-search-result/gif-search-result.component';
+import { BadWordsFilterPipe } from '../shared/bad-words-filter.pipe';
 
 describe('GifSearchComponent', () => {
   let component: GifSearchComponent;
@@ -8,7 +11,8 @@ describe('GifSearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GifSearchComponent ]
+      declarations: [ GifSearchComponent, GifSearchResultComponent, BadWordsFilterPipe ],
+      imports: [ HttpClientModule, FormsModule ]
     })
     .compileComponents();
   }));

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MultiResponse as GiphyResponse } from 'giphy-api';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment' ;
-import constants from '../shared/constants'
+import constants from '../shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +26,5 @@ export class GiphySearchService {
           rating: 'g'
         }
       });
-      // .pipe(
-      //   map(
-      //     response => response.data
-      //   )
-      // );
   }
 }
