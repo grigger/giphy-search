@@ -1,0 +1,39 @@
+h1 {
+  margin-bottom: 30px;
+}
+
+.search-input {
+  max-width: 600px;
+}
+
+.alert {
+  margin-top: 30px;
+}
+
+pre {
+  margin: 5px 0 0 0;
+}
+
+.spinner {
+  margin: 100px;
+}
+
+.results-meta {
+  margin-top: 20px;
+}
+
+.results-container {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  overflow: hidden;
+  margin: 20px auto;
+}
+
+app-gif-search-result {
+  flex: 1 0 auto;
+  margin: 0 10px 10px 0;
+}
