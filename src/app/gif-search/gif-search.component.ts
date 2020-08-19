@@ -14,7 +14,7 @@ import constants from '../shared/constants';
 export class GifSearchComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public searchResults: GIFObject[];
-  public searchResultsMeta: GiphyResponse['pagination'] & { page: number };
+  public searchResultsMeta: GiphyResponse['pagination'];
   public searchResultsPerPage = constants.searchResultsPerPage;
   public currentSearchTerm: string;
   public error: string;
@@ -55,7 +55,7 @@ export class GifSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach(s$ => s$.unsubscribe());
+    this.subscriptions.forEach(s$ => s$.unsubscribe());
     this.subscriptions = [];
   }
 
@@ -71,10 +71,7 @@ export class GifSearchComponent implements OnInit, OnDestroy {
 
   renderSearchResults(results: GiphyResponse): void {
     this.searchResults = results.data;
-    this.searchResultsMeta = {
-      ...results.pagination,
-      page: 1
-    };
+    this.searchResultsMeta = results.pagination;
 
     // Giphy is limiting beta keys to an offset of up to 5000, so only first 5000 results will be shown for now
     // 4 years after the change, they still didn't add it to the documentation - https://github.com/Giphy/GiphyAPI/issues/88

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GifSearchResultComponent } from './gif-search-result.component';
-import {GIFObject, Images} from 'giphy-api';
+import { GIFObject } from 'giphy-api';
 
 describe('GifSearchResultComponent', () => {
   let component: GifSearchResultComponent;
