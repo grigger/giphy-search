@@ -30,6 +30,14 @@ npm run build:prod
 ``` 
 
 ## Tests and coverage
+```shell script
+# Run unit tests
+npm run test
+
+# Generate test coverage
+npm run test:coverage
+``` 
+
 Current unit testing coverage is over 90%:
 ```
 Statements   : 98.51% ( 66/67 )
