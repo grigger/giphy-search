@@ -1,27 +1,60 @@
-# GiphySearch
+# GifSearch
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.6.
+You can check out the app running here:
+here (heroku)
 
-## Development server
+## Installation
+Clone this project, then run
+```shell script
+npm install
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Running
 
-## Code scaffolding
+```shell script
+# Run in development mode
+npm start
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Run a production build (in prod)
+npm start:prod
+```
 
-## Build
+## Building 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```shell script
+# Run a dev build
+npm run build
 
-## Running unit tests
+# Run a prod build
+npm run build:prod
+``` 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Tests and coverage
+Current unit testing coverage is over 90%:
+```
+Statements   : 98.51% ( 66/67 )
+Branches     : 91.67% ( 11/12 )
+Functions    : 97.06% ( 33/34 )
+Lines        : 98.28% ( 57/58 )
+```
 
-## Running end-to-end tests
+End-to-end tests I have decided not to extend for now because of time constraints. 
+Usually I'd implement them at least for the critical flows.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Some technical considerations
+Folder structure has been kept as flat as possible, but I also had extensibility in mind by activating 
+the routes, as well as separating the Giphy-related logic and bad words filter-related logic from the gif-search 
+component to make it providers-agnostic.<br>
+Since it's such a small SPA, a single module with everything packaged with it is more than enough,
+transfer size is currently less than 550kb built. <br>
+As it grows, the two gif search components can be moved into their own module, lazy-loaded based on the route.
 
-## Further help
+To run in production, a simple Node server can handle a decent amount of static traffic to start. Later it can be 
+migrated to nginx or Apache (or move the Node server behind nginx/Apache) which are better suited to serve static files.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Design-wise, for this prototype app I use Bootstrap - although it looks pretty old already, it's a battle-hardened framework and I chose it for its simplicity;  
+interface is not where I chose to invest the most time.  I like Angular material's look more, it's definitely more modern and using Google's material design 
+guidelines but the paginator was not good for what I needed here, much worse than ng-bootstrap's. 
+
+Bad words filter does its job and it's pretty good for a prototype, but it's not the best, and can be quite easily fooled - 
+in a bigger app an in-house implementation would be mandatory.
