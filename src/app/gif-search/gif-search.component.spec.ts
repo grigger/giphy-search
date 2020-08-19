@@ -293,5 +293,5 @@ describe('GifSearchComponent', () => {
     it('returns true', () => {
       expect(component.showError('err')).toBeTrue();
     });
-  })
+  });
 });
