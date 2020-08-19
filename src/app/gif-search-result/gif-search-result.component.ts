@@ -23,7 +23,11 @@ export class GifSearchResultComponent implements OnInit {
   }
 
   goToGifPage(): void {
-    window.location.href = this.gif.url;
+    this.goToUrl(this.gif.url);
+  }
+
+  goToUrl(url) {
+    window.location.href = url;
   }
 
 }

@@ -280,4 +280,18 @@ describe('GifSearchComponent', () => {
       expect(component.searchResultsMeta.total_count).toBe(5000);
     });
   });
+
+  describe('showError', () => {
+    it('should set the component error', () => {
+      component.showError('err');
+      expect(component.error).toEqual('err');
+
+      component.showError({ message: 'err' });
+      expect(component.error).toEqual('err');
+    });
+
+    it('returns true', () => {
+      expect(component.showError('err')).toBeTrue();
+    });
+  })
 });
