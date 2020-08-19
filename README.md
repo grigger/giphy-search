@@ -1,7 +1,7 @@
 # GifSearch
 
-You can check out the app running here:
-here (heroku)
+Check out the app running live here:<br>
+[http://gif-search-gg.herokuapp.com](http://gif-search-gg.herokuapp.com)
 
 ## Installation
 Clone this project, then run
@@ -52,9 +52,10 @@ As it grows, the two gif search components can be moved into their own module, l
 To run in production, a simple Node server can handle a decent amount of static traffic to start. Later it can be 
 migrated to nginx or Apache (or move the Node server behind nginx/Apache) which are better suited to serve static files.
 
-Design-wise, for this prototype app I use Bootstrap - although it looks pretty old already, it's a battle-hardened framework and I chose it for its simplicity;  
-interface is not where I chose to invest the most time.  I like Angular material's look more, it's definitely more modern and using Google's material design 
-guidelines but the paginator was not good for what I needed here, much worse than ng-bootstrap's. 
+Design-wise, for this prototype app I use Bootstrap - although it looks pretty old already, it's a battle-hardened framework 
+and I chose it for its simplicity; interface is not where I chose to invest the most time.  I like Angular material's look 
+more, it's definitely more modern and using Google's material design guidelines but the paginator was not good for what I 
+needed here, much worse than ng-bootstrap's. 
 
 Bad words filter does its job and it's pretty good for a prototype, but it's not the best, and can be quite easily fooled - 
 in a bigger app an in-house implementation would be mandatory.

@@ -10,7 +10,8 @@
     "test": "ng test",
     "test:coverage": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postbuild": "npm run build:prod"
   },
   "private": true,
   "dependencies": {
