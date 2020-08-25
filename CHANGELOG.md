@@ -9,8 +9,10 @@ Format: \<MAJOR>.\<MINOR>.\<PATCH>, with
 -  \<MINOR>  - non-breaking feature changes
 -  \<PATCH>  - bug Fixed and very small features/changes
 
-## [1.0.0] - 2020-08-19
+## [1.0.1] - 2020-08-25
+- Open Giphy images in a new tab
 
+## [1.0.0] - 2020-08-19
 Release Gif Search component, with the following features:
  - search Gifs on Giphy.com by name
  - pagination, up to 250 pages of results

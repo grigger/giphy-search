@@ -27,7 +27,7 @@ export class GifSearchResultComponent implements OnInit {
   }
 
   goToUrl(url): void {
-    window.location.href = url;
+    window.open(url);
   }
 
 }
